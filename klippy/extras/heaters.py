@@ -139,7 +139,7 @@ class Heater:
     def cmd_SET_HEATER_TEMPERATURE(self, gcmd):
         temp = gcmd.get_float('TARGET', 0.)
         pheaters = self.printer.lookup_object('heaters')
-        pheaters.set_temperature(self, temp+1)
+        pheaters.set_temperature(self, temp)
 
 
 ######################################################################
