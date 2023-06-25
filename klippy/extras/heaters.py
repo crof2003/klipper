@@ -94,7 +94,7 @@ class Heater:
     def get_smooth_time(self):
         return self.smooth_time
     def set_temp(self, degrees):
-        if degrees and (degrees < self.min_temp or degrees > self.max_temp):
+        if degrees and (degrees < self.min_temp or degrees > self.max_temp) or degrees != degrees:
             raise self.printer.command_error(
                 "Requested temperature (%.1f) out of range (%.1f:%.1f)"
                 % (degrees, self.min_temp, self.max_temp))
@@ -138,6 +138,10 @@ class Heater:
     cmd_SET_HEATER_TEMPERATURE_help = "Sets a heater temperature"
     def cmd_SET_HEATER_TEMPERATURE(self, gcmd):
         temp = gcmd.get_float('TARGET', 0.)
+        #Check if the requested temperature is NaN. If so, raise an error.
+        if temp!=temp:
+            raise self.printer.command_error("Requested temperature out of range (%.1f:%.1f)"
+                % (self.min_temp, self.max_temp))
         pheaters = self.printer.lookup_object('heaters')
         pheaters.set_temperature(self, temp)
 
